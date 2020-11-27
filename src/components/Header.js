@@ -40,7 +40,7 @@ const Header = ({ history }) => {
 			<AppBar position='sticky' color='inherit' className={classes.appBar}>
 				<Toolbar className={classes.toolBar}>
 					<Typography variant='h4' className={classes.title}>
-						<strong>Top 5 League Score Centre</strong>
+						<strong>Football Centre</strong>
 					</Typography>
 					<div className={classes.navButtons}>
 						<Button className={classes.navButton} variant='text' color='default' onClick={() => history.push('/')}>
