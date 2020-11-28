@@ -35,13 +35,13 @@ const HomePage = ({ history }) => {
 				<div className={classes.box}>
 					<Typography variant='h5' color='initial'>
 						Get started with League Standings{' '}
-						<span className={classes.link} onClick={() => history.push('/standings')}>
+						<span className={classes.link} onClick={() => history.push('/standings/PL')}>
 							here
 						</span>
 					</Typography>
 					<Typography variant='h5' color='initial'>
-						Take a look at the European top goalscorers and assisters{' '}
-						<span className={classes.link} onClick={() => history.push('/contributions')}>
+						Take a look at the top goalscorers in each league{' '}
+						<span className={classes.link} onClick={() => history.push('/scorers/PL')}>
 							here
 						</span>
 					</Typography>

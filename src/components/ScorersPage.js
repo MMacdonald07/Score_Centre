@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { withRouter } from 'react-router-dom';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -9,7 +10,6 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
 import { CircularProgress } from '@material-ui/core';
 import Drawer from '@material-ui/core/Drawer';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -80,15 +80,11 @@ const useStyles = makeStyles({
 		background: 'white',
 		border: 'solid 2px black',
 		textAlign: 'center'
-	},
-	crest: {
-		maxHeight: 25,
-		maxWidth: 25
 	}
 });
 
-const TablesPage = props => {
-	const [competitionData, setCompetitionData] = useState();
+const ScorersPage = props => {
+	const [scorersData, setScorersData] = useState();
 	const classes = useStyles();
 	const { history } = props;
 	const leagueCode = props.match.params.leagueCode;
@@ -97,60 +93,58 @@ const TablesPage = props => {
 		{
 			text: 'Premier League',
 			code: 'PL',
-			onClick: () => history.push('/standings/PL')
+			onClick: () => history.push('/scorers/PL')
 		},
 		{
 			text: 'Serie A',
 			code: 'SA',
-			onClick: () => history.push('/standings/SA')
+			onClick: () => history.push('/scorers/SA')
 		},
 		{
 			text: 'Bundesliga',
 			code: 'BL1',
-			onClick: () => history.push('/standings/BL1')
+			onClick: () => history.push('/scorers/BL1')
 		},
 		{
 			text: 'Ligue 1',
 			code: 'FL1',
-			onClick: () => history.push('/standings/FL1')
+			onClick: () => history.push('/scorers/FL1')
 		},
 		{
 			text: 'La Liga',
 			code: 'PD',
-			onClick: () => history.push('/standings/PD')
+			onClick: () => history.push('/scorers/PD')
+		},
+		{
+			text: 'Champions League',
+			code: 'CL',
+			onClick: () => history.push('/scorers/CL')
 		}
 	];
 
 	useEffect(() => {
 		axios
-			.get(`https://api.football-data.org/v2/competitions/${leagueCode}/standings`, {
+			.get(`https://api.football-data.org/v2/competitions/${leagueCode}/scorers?limit=20`, {
 				headers: {
 					'X-Auth-Token': process.env.REACT_APP_FOOTBALL_API_KEY
 				}
 			})
 			.then(function (res) {
 				const { data } = res;
-				setCompetitionData(data);
+				setScorersData(data);
 			});
 	}, [leagueCode]);
 
-	const getTableRow = team => (
-		<TableRow hover tabIndex={-1} key={team.team.name}>
+	const getTableRow = (scorer, index) => (
+		<TableRow hover tabIndex={-1} key={scorer.player.name}>
 			<TableCell component='th' scope='row'>
-				<div className={classes.position}>{team.position}</div>
+				<div className={classes.position}>{index + 1}</div>
 			</TableCell>
-			<TableCell width={30} align='right'>
-				<img className={classes.crest} src={team.team.crestUrl} alt={`${team.team.name} crest`} />
-			</TableCell>
-			<TableCell>{team.team.name}</TableCell>
-			<TableCell align='center'>{team.playedGames}</TableCell>
-			<TableCell align='center'>{team.won}</TableCell>
-			<TableCell align='center'>{team.draw}</TableCell>
-			<TableCell align='center'>{team.lost}</TableCell>
-			<TableCell align='center'>{team.goalsFor}</TableCell>
-			<TableCell align='center'>{team.goalsAgainst}</TableCell>
-			<TableCell align='center'>{team.goalDifference}</TableCell>
-			<TableCell align='center'>{team.points}</TableCell>
+			<TableCell>{scorer.player.name}</TableCell>
+			<TableCell align='center'>{scorer.team.name}</TableCell>
+			<TableCell align='center'>{scorer.player.nationality}</TableCell>
+			<TableCell align='center'>{scorer.player.position}</TableCell>
+			<TableCell align='center'>{scorer.numberOfGoals}</TableCell>
 		</TableRow>
 	);
 
@@ -189,10 +183,10 @@ const TablesPage = props => {
 					<Divider />
 				</div>
 			</Drawer>
-			{competitionData ? (
+			{scorersData ? (
 				<div>
 					<Typography className={classes.title} variant='h4' color='initial'>
-						{competitionData.competition.name} Table
+						{scorersData.competition.name} Top Scorers
 					</Typography>
 					<Paper color='black' className={classes.tableContainer}>
 						<TableContainer component={Paper} className={classes.table}>
@@ -200,19 +194,14 @@ const TablesPage = props => {
 								<TableHead>
 									<TableRow>
 										<StyledTableCell />
-										<StyledTableCell />
-										<StyledTableCell />
-										<StyledTableCell align='center'>Played</StyledTableCell>
-										<StyledTableCell align='center'>Won</StyledTableCell>
-										<StyledTableCell align='center'>Drawn</StyledTableCell>
-										<StyledTableCell align='center'>Lost</StyledTableCell>
-										<StyledTableCell align='center'>GF</StyledTableCell>
-										<StyledTableCell align='center'>GA</StyledTableCell>
-										<StyledTableCell align='center'>GD</StyledTableCell>
-										<StyledTableCell align='center'>Points</StyledTableCell>
+										<StyledTableCell>Name</StyledTableCell>
+										<StyledTableCell align='center'>Club</StyledTableCell>
+										<StyledTableCell align='center'>Nationality</StyledTableCell>
+										<StyledTableCell align='center'>Position</StyledTableCell>
+										<StyledTableCell align='center'>Goals Scored</StyledTableCell>
 									</TableRow>
 								</TableHead>
-								<TableBody>{competitionData.standings[0].table.map(team => getTableRow(team))}</TableBody>
+								<TableBody>{scorersData.scorers.map((scorer, index) => getTableRow(scorer, index))}</TableBody>
 							</Table>
 						</TableContainer>
 					</Paper>
@@ -226,4 +215,4 @@ const TablesPage = props => {
 	);
 };
 
-export default withRouter(TablesPage);
+export default withRouter(ScorersPage);

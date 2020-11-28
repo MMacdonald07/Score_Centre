@@ -6,14 +6,15 @@ import Toolbar from '@material-ui/core/Toolbar';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
 	root: {
 		flexGrow: 1
 	},
 	appBar: {
 		paddingBottom: '1.5vh',
 		margin: '0 auto',
-		minWidth: 530
+		minWidth: 530,
+		zIndex: theme.zIndex.drawer + 1
 	},
 	toolBar: {
 		margin: '0 auto',
@@ -31,13 +32,13 @@ const useStyles = makeStyles({
 	navButton: {
 		marginLeft: '1vw'
 	}
-});
+}));
 
 const Header = ({ history }) => {
 	const classes = useStyles();
 	return (
 		<div className={classes.root}>
-			<AppBar position='sticky' color='inherit' className={classes.appBar}>
+			<AppBar position='fixed' color='inherit' className={classes.appBar}>
 				<Toolbar className={classes.toolBar}>
 					<Typography variant='h4' className={classes.title}>
 						<strong>Football Centre</strong>
@@ -49,11 +50,11 @@ const Header = ({ history }) => {
 						<Button className={classes.navButton} variant='text' color='default' onClick={() => history.push('/scores')}>
 							Scores &amp; Fixtures
 						</Button>
-						<Button className={classes.navButton} variant='text' color='default' onClick={() => history.push('/standings')}>
+						<Button className={classes.navButton} variant='text' color='default' onClick={() => history.push('/standings/PL')}>
 							Standings
 						</Button>
-						<Button className={classes.navButton} variant='text' color='default' onClick={() => history.push('/contributions')}>
-							Goal Contributions
+						<Button className={classes.navButton} variant='text' color='default' onClick={() => history.push('/scorers/PL')}>
+							Goal Scorers
 						</Button>
 						<Button className={classes.navButton} variant='text' color='default' onClick={() => history.push('/teams')}>
 							Teams
@@ -61,6 +62,7 @@ const Header = ({ history }) => {
 					</div>
 				</Toolbar>
 			</AppBar>
+			<Toolbar />
 		</div>
 	);
 };
