@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { CircularProgress } from '@material-ui/core';
-import { Grid, Card, CardContent, CardMedia, Typography, Toolbar, TextField } from '@material-ui/core';
+import { Grid, Card, CardContent, CardMedia, Typography, TextField } from '@material-ui/core';
 import { Search } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import Header from './Header';
@@ -8,7 +8,7 @@ import clubData from '../fetchClubs.js';
 
 const useStyles = makeStyles({
 	clubContainer: {
-		padding: '0 4vw'
+		padding: '0 4vw 1vh'
 	},
 	card: {
 		cursor: 'pointer',
@@ -30,7 +30,7 @@ const useStyles = makeStyles({
 	searchContainer: {
 		display: 'flex',
 		padding: '0 3vw',
-		margin: '0 0 2vh'
+		margin: '4vh 0 2vh'
 	},
 	searchIcon: {
 		alignSelf: 'flex-end',
@@ -68,7 +68,6 @@ const TeamListPage = ({ history }) => {
 	return (
 		<div>
 			<Header />
-			<Toolbar />
 			<div className={classes.searchContainer}>
 				<Search className={classes.searchIcon} />
 				<TextField className={classes.searchInput} label='Club' variant='standard' onChange={e => setFilter(e.target.value)} />

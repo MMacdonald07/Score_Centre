@@ -72,6 +72,9 @@ const useStyles = makeStyles({
 		maxHeight: '65vh',
 		margin: '0 auto'
 	},
+	tableRow: {
+		cursor: 'pointer'
+	},
 	position: {
 		borderRadius: '100%',
 		width: '50%',
@@ -135,7 +138,13 @@ const TablesPage = props => {
 	}, [leagueCode]);
 
 	const getTableRow = team => (
-		<TableRow hover tabIndex={-1} key={team.team.name}>
+		<TableRow
+			className={classes.tableRow}
+			hover
+			tabIndex={-1}
+			key={team.team.name}
+			onClick={() => history.push(`/teams/${team.team.id}`)}
+		>
 			<TableCell component='th' scope='row'>
 				<div className={classes.position}>{team.position}</div>
 			</TableCell>
