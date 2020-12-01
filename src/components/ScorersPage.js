@@ -75,9 +75,7 @@ const useStyles = makeStyles({
 	position: {
 		borderRadius: '100%',
 		width: '50%',
-		height: '50%',
 		padding: '8% 0%',
-		background: 'white',
 		border: 'solid 2px black',
 		textAlign: 'center'
 	}

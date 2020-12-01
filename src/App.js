@@ -6,7 +6,6 @@ import TablesPage from './components/TablesPage';
 import ScorersPage from './components/ScorersPage';
 import TeamListPage from './components/TeamListPage';
 import TeamPage from './components/TeamPage';
-import PlayerPage from './components/PlayerPage';
 
 function App() {
 	return (
@@ -18,7 +17,6 @@ function App() {
 				<Route path='/scorers/:leagueCode' render={props => <ScorersPage {...props} />} />
 				<Route path='/teams' exact render={props => <TeamListPage {...props} />} />
 				<Route path='/teams/:teamId' exact render={props => <TeamPage {...props} />} />
-				<Route path='/teams/:teamId/:playerId' render={props => <PlayerPage {...props} />} />
 			</Switch>
 		</div>
 	);
