@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { CircularProgress } from '@material-ui/core';
-import { Grid, Card, CardContent, CardMedia, Typography, TextField } from '@material-ui/core';
+import { Box, Grid, Card, CardContent, CardMedia, Typography, TextField } from '@material-ui/core';
 import { Search } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import Header from './Header';
@@ -74,11 +74,13 @@ const TeamListPage = ({ history }) => {
 			</div>
 			{clubData ? (
 				<div>
-					<Grid container spacing={4} className={classes.clubContainer}>
-						{Object.keys(clubData).map(
-							index => clubData[index].name.toLowerCase().includes(filter.toLowerCase()) && getClubCard(index)
-						)}
-					</Grid>
+					<Box style={{ maxWidth: '85%', margin: '0 auto' }}>
+						<Grid container spacing={4} justify='center' className={classes.clubContainer}>
+							{Object.keys(clubData).map(
+								index => clubData[index].name.toLowerCase().includes(filter.toLowerCase()) && getClubCard(index)
+							)}
+						</Grid>
+					</Box>
 				</div>
 			) : (
 				<>
