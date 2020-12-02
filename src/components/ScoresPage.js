@@ -160,6 +160,57 @@ const ScoresPage = () => {
 					</Grid>
 				);
 			}
+		} else if (match.status === 'IN_PLAY' || 'PAUSED') {
+			console.log(match);
+			if (match.competition.name === 'UEFA Champions League') {
+				return (
+					<Grid item xs={12} sm={6} md={4} lg={3} key={match.id}>
+						<Card className={classes.card}>
+							<CardMedia
+								className={classes.cardMedia}
+								image='https://seeklogo.com/images/U/uefa-champions-league-logo-506FCBD867-seeklogo.com.png'
+								style={{ width: '120px', height: '150px' }}
+							/>
+							<CardContent className={classes.cardContent}>
+								<Typography variant='h6' color='initial'>
+									{match.group} {'\u2022'} <span style={{ color: 'red', fontWeight: 700 }}>Live</span>
+								</Typography>
+								<Typography variant='h6' color='initial'>
+									Current Score:
+								</Typography>
+								<Typography variant='body1' color='initial'>
+									{match.homeTeam.name} {match.score.fullTime.homeTeam} - {match.score.fullTime.awayTeam}{' '}
+									{match.awayTeam.name}
+								</Typography>
+							</CardContent>
+						</Card>
+					</Grid>
+				);
+			} else {
+				return (
+					<Grid item xs={12} sm={6} md={4} lg={3} key={match.id}>
+						<Card className={classes.card}>
+							<CardMedia
+								className={classes.cardMedia}
+								image={match.competition.area.ensignUrl}
+								style={{ width: '120px', height: '150px' }}
+							/>
+							<CardContent className={classes.cardContent}>
+								<Typography variant='h6' color='initial' style={{ color: 'red', fontWeight: 700 }}>
+									Live
+								</Typography>
+								<Typography variant='h6' color='initial'>
+									Current Score:
+								</Typography>
+								<Typography variant='body1' color='initial'>
+									{match.homeTeam.name} {match.score.fullTime.homeTeam} - {match.score.fullTime.awayTeam}{' '}
+									{match.awayTeam.name}
+								</Typography>
+							</CardContent>
+						</Card>
+					</Grid>
+				);
+			}
 		}
 	};
 
