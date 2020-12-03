@@ -15,7 +15,7 @@ import Header from './Header';
 
 const useStyles = makeStyles({
 	teamName: {
-		paddingLeft: '10vw',
+		paddingLeft: '20vw',
 		textDecoration: 'underline'
 	},
 	contentContainer: {
@@ -39,6 +39,13 @@ const useStyles = makeStyles({
 		background: '#A9A9A9',
 		padding: '1vh 1vw 2vh',
 		margin: '2vh 2vw'
+	},
+	matchPaper: {
+		background: '#A9A9A9',
+		padding: '1vh 2vw 2vh',
+		margin: '2vh 2vw',
+		display: 'inline-block',
+		width: '30%'
 	},
 	list: {
 		listStyle: 'none'
@@ -68,6 +75,8 @@ const TeamPage = props => {
 	const [defenders, setDefenders] = useState([]);
 	const [midfielders, setMidfielders] = useState([]);
 	const [attackers, setAttackers] = useState([]);
+	const [pastMatchData, setPastMatchData] = useState();
+	const [futureMatchData, setFutureMatchData] = useState();
 	const classes = useStyles();
 
 	useEffect(() => {
@@ -85,6 +94,42 @@ const TeamPage = props => {
 			})
 			.catch(function (err) {
 				setTeamData(false);
+			});
+		axios
+			.get(
+				`https://api.football-data.org/v2/teams/${teamId}/matches?status=IN_PLAY,PAUSED,FINISHED&limit=3&dateTo=${moment().format(
+					'yyyy-MM-DD'
+				)}&dateFrom=${moment().subtract(1, 'month').format('yyyy-MM-DD')}`,
+				{
+					headers: {
+						'X-Auth-Token': process.env.REACT_APP_FOOTBALL_API_KEY
+					}
+				}
+			)
+			.then(function (res) {
+				const { matches } = res.data;
+				setPastMatchData(matches);
+			})
+			.catch(function (err) {
+				setPastMatchData(false);
+			});
+		axios
+			.get(
+				`https://api.football-data.org/v2/teams/${teamId}/matches?status=SCHEDULED&dateTo=${moment()
+					.add(1, 'month')
+					.format('yyyy-MM-DD')}&dateFrom=${moment().format('yyyy-MM-DD')}`,
+				{
+					headers: {
+						'X-Auth-Token': process.env.REACT_APP_FOOTBALL_API_KEY
+					}
+				}
+			)
+			.then(function (res) {
+				const { matches } = res.data;
+				setFutureMatchData(matches.slice(0, 3));
+			})
+			.catch(function (err) {
+				setFutureMatchData(false);
 			});
 	}, [teamId]);
 
@@ -157,7 +202,39 @@ const TeamPage = props => {
 					</Typography>
 				</Paper>
 			</div>
+
 			<img className={classes.imageContainer} src={teamData.crestUrl} alt='Crest' />
+			<br />
+
+			<Paper className={classes.matchPaper} elevation={10}>
+				<Typography variant='h6' color='initial'>
+					Previous Results:
+				</Typography>
+				<ul className={classes.list}>
+					{pastMatchData.map(match => (
+						<li key={match.id}>
+							<Typography variant='body1' color='initial' style={{ textAlign: 'center' }}>
+								{match.homeTeam.name} {match.score.fullTime.homeTeam} - {match.score.fullTime.awayTeam}{' '}
+								{match.awayTeam.name}
+							</Typography>
+						</li>
+					))}
+				</ul>
+			</Paper>
+			<Paper className={classes.matchPaper} elevation={10}>
+				<Typography variant='h6' color='initial'>
+					Upcoming Fixtures:
+				</Typography>
+				<ul className={classes.list}>
+					{futureMatchData.map(match => (
+						<li key={match.id}>
+							<Typography variant='body1' color='initial' style={{ textAlign: 'center' }}>
+								{moment(match.utcDate).format('DD/MM/yyyy HH:mm')} - {match.homeTeam.name} Vs {match.awayTeam.name}
+							</Typography>
+						</li>
+					))}
+				</ul>
+			</Paper>
 
 			<Paper className={classes.accordionPaper} elevation={10}>
 				<Typography className={classes.accordionHeading} variant='h5'>
@@ -238,7 +315,7 @@ const TeamPage = props => {
 			<Header />
 			<Toolbar />
 			{teamData === undefined && <CircularProgress />}
-			{teamData !== undefined && teamData && generateTeamJsx()}
+			{teamData !== undefined && pastMatchData && futureMatchData && generateTeamJsx()}
 			{teamData === false && (
 				<Typography variant='h6' color='initial'>
 					Club Not Found

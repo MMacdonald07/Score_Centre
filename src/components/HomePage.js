@@ -40,8 +40,8 @@ const HomePage = ({ history }) => {
 						</span>
 					</Typography>
 					<Typography variant='h5' color='initial'>
-						Take a look at the top goalscorers in each league{' '}
-						<span className={classes.link} onClick={() => history.push('/scorers/PL')}>
+						Take a look at today's fixtures and results{' '}
+						<span className={classes.link} onClick={() => history.push('/scores')}>
 							here
 						</span>
 					</Typography>

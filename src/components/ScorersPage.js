@@ -19,7 +19,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Header from './Header';
 
-const drawerWidth = 240;
+const drawerWidth = '10%';
 
 const StyledTableCell = withStyles(theme => ({
 	head: {

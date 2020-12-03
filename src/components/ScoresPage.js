@@ -54,7 +54,7 @@ const ScoresPage = () => {
 
 		axios
 			.get(
-				`http://api.football-data.org/v2/matches?competitions=PL,BL1,FL1,PD,SA,CL&dateTo=${formattedDate}&dateFrom=${formattedDate}`,
+				`http://api.football-data.org/v2/matches?competitions=PL,BL1,FL1,PD,SA,CL&dateTo=${formattedDate}&dateFrom=${formattedDate}&status=IN_PLAY,FINISHED,PAUSED,SCHEDULED`,
 				{
 					headers: {
 						'X-Auth-Token': process.env.REACT_APP_FOOTBALL_API_KEY
@@ -142,7 +142,7 @@ const ScoresPage = () => {
 							<CardMedia
 								className={classes.cardMedia}
 								image={match.competition.area.ensignUrl}
-								style={{ width: '120px', height: '150px' }}
+								style={{ width: '130px', height: '150px' }}
 							/>
 							<CardContent className={classes.cardContent}>
 								<Typography variant='h6' color='initial'>
@@ -161,7 +161,6 @@ const ScoresPage = () => {
 				);
 			}
 		} else if (match.status === 'IN_PLAY' || 'PAUSED') {
-			console.log(match);
 			if (match.competition.name === 'UEFA Champions League') {
 				return (
 					<Grid item xs={12} sm={6} md={4} lg={3} key={match.id}>
