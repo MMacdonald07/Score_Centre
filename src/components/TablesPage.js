@@ -17,14 +17,29 @@ import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Header from './Header';
 
-const drawerWidth = '10%';
+const drawerWidth = 240;
+
+const headCells = [
+	{ id: 'position', label: '' },
+	{ id: 'crest', label: '' },
+	{ id: 'name', label: '' },
+	{ id: 'playedGames', label: 'Played' },
+	{ id: 'won', label: 'Won' },
+	{ id: 'draw', label: 'Drawn' },
+	{ id: 'lost', label: 'Lost' },
+	{ id: 'goalsFor', label: 'GF' },
+	{ id: 'goalsAgainst', label: 'GA' },
+	{ id: 'goalDifference', label: 'GD' },
+	{ id: 'points', label: 'Points' }
+];
 
 const StyledTableCell = withStyles(theme => ({
 	head: {
-		backgroundColor: theme.palette.common.black,
-		color: theme.palette.common.white,
+		backgroundColor: theme.palette.grey['500'],
+		color: theme.palette.common.black,
 		fontSize: 20
 	},
 	body: {
@@ -75,26 +90,96 @@ const useStyles = makeStyles({
 	tableRow: {
 		cursor: 'pointer'
 	},
-	position: {
-		borderRadius: '100%',
-		width: '50%',
-		height: '50%',
-		padding: '8% 0%',
-		background: 'white',
-		border: 'solid 2px black',
-		textAlign: 'center'
-	},
 	crest: {
 		maxHeight: 25,
 		maxWidth: 25
+	},
+	visuallyHidden: {
+		border: 0,
+		clip: 'rect(0 0 0 0)',
+		height: 1,
+		margin: -1,
+		overflow: 'hidden',
+		padding: 0,
+		position: 'absolute',
+		top: 20,
+		width: 1
 	}
 });
 
+function descendingComparator(a, b, orderBy) {
+	if (b[orderBy] < a[orderBy]) {
+		return -1;
+	}
+	if (b[orderBy] > a[orderBy]) {
+		return 1;
+	}
+	return 0;
+}
+
+function getComparator(order, orderBy) {
+	return order === 'desc' ? (a, b) => descendingComparator(a, b, orderBy) : (a, b) => -descendingComparator(a, b, orderBy);
+}
+
+function stableSort(array, comparator) {
+	const stabilizedThis = array.map((el, index) => [el, index]);
+	stabilizedThis.sort((a, b) => {
+		const order = comparator(a[0], b[0]);
+		if (order !== 0) return order;
+		return a[1] - b[1];
+	});
+	return stabilizedThis.map(el => el[0]);
+}
+
+function EnhancedTableHead(props) {
+	const { classes, order, orderBy, onRequestSort } = props;
+	const createSortHandler = property => e => {
+		onRequestSort(e, property);
+	};
+
+	return (
+		<TableHead>
+			<TableRow>
+				{headCells.map(headCell => {
+					if (headCell.id !== 'crest' && headCell.id !== 'name') {
+						return (
+							<StyledTableCell key={headCell.id} align='center' sortDirection={orderBy === headCell.id ? order : false}>
+								<TableSortLabel
+									active={orderBy === headCell.id}
+									direction={orderBy === headCell.id ? order : 'asc'}
+									onClick={createSortHandler(headCell.id)}
+								>
+									{headCell.label}
+									{orderBy === headCell.id ? (
+										<span className={classes.visuallyHidden}>
+											{order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+										</span>
+									) : null}
+								</TableSortLabel>
+							</StyledTableCell>
+						);
+					} else {
+						return <StyledTableCell key={headCell.id} align='center' />;
+					}
+				})}
+			</TableRow>
+		</TableHead>
+	);
+}
+
 const TablesPage = props => {
 	const [competitionData, setCompetitionData] = useState();
+	const [order, setOrder] = useState('asc');
+	const [orderBy, setOrderBy] = useState('position');
 	const classes = useStyles();
 	const { history } = props;
 	const leagueCode = props.match.params.leagueCode;
+
+	const handleRequestSort = (e, property) => {
+		const isAsc = orderBy === property && order === 'asc';
+		setOrder(isAsc ? 'desc' : 'asc');
+		setOrderBy(property);
+	};
 
 	const itemList = [
 		{
@@ -145,8 +230,8 @@ const TablesPage = props => {
 			key={team.team.name}
 			onClick={() => history.push(`/teams/${team.team.id}`)}
 		>
-			<TableCell component='th' scope='row'>
-				<div className={classes.position}>{team.position}</div>
+			<TableCell component='th' scope='row' align='center'>
+				{team.position}
 			</TableCell>
 			<TableCell width={30} align='right'>
 				<img className={classes.crest} src={team.team.crestUrl} alt={`${team.team.name} crest`} />
@@ -206,22 +291,12 @@ const TablesPage = props => {
 					<Paper color='black' className={classes.tableContainer}>
 						<TableContainer component={Paper} className={classes.table}>
 							<Table stickyHeader>
-								<TableHead>
-									<TableRow>
-										<StyledTableCell />
-										<StyledTableCell />
-										<StyledTableCell />
-										<StyledTableCell align='center'>Played</StyledTableCell>
-										<StyledTableCell align='center'>Won</StyledTableCell>
-										<StyledTableCell align='center'>Drawn</StyledTableCell>
-										<StyledTableCell align='center'>Lost</StyledTableCell>
-										<StyledTableCell align='center'>GF</StyledTableCell>
-										<StyledTableCell align='center'>GA</StyledTableCell>
-										<StyledTableCell align='center'>GD</StyledTableCell>
-										<StyledTableCell align='center'>Points</StyledTableCell>
-									</TableRow>
-								</TableHead>
-								<TableBody>{competitionData.standings[0].table.map(team => getTableRow(team))}</TableBody>
+								<EnhancedTableHead classes={classes} order={order} orderBy={orderBy} onRequestSort={handleRequestSort} />
+								<TableBody>
+									{stableSort(competitionData.standings[0].table, getComparator(order, orderBy)).map(team =>
+										getTableRow(team)
+									)}
+								</TableBody>
 							</Table>
 						</TableContainer>
 					</Paper>

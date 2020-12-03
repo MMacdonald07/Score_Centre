@@ -19,7 +19,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Header from './Header';
 
-const drawerWidth = '10%';
+const drawerWidth = 240;
 
 const StyledTableCell = withStyles(theme => ({
 	head: {
@@ -71,13 +71,6 @@ const useStyles = makeStyles({
 		maxWidth: '90%',
 		maxHeight: '65vh',
 		margin: '0 auto'
-	},
-	position: {
-		borderRadius: '100%',
-		width: '50%',
-		padding: '8% 0%',
-		border: 'solid 2px black',
-		textAlign: 'center'
 	}
 });
 
@@ -135,8 +128,8 @@ const ScorersPage = props => {
 
 	const getTableRow = (scorer, index) => (
 		<TableRow hover tabIndex={-1} key={scorer.player.name}>
-			<TableCell component='th' scope='row'>
-				<div className={classes.position}>{index + 1}</div>
+			<TableCell component='th' scope='row' align='center'>
+				{index + 1}
 			</TableCell>
 			<TableCell>{scorer.player.name}</TableCell>
 			<TableCell align='center'>{scorer.team.name}</TableCell>
