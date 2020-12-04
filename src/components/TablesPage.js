@@ -53,6 +53,7 @@ const useStyles = makeStyles({
 		flexShrink: 0
 	},
 	drawerPaper: {
+		maxWidth: '15vw',
 		width: drawerWidth
 	},
 	drawerContainer: {
@@ -76,7 +77,7 @@ const useStyles = makeStyles({
 		padding: '5vh 0',
 		marginBottom: '8vh',
 		minWidth: 530,
-		maxWidth: '75vw',
+		maxWidth: '60vw',
 		maxHeight: '75vh',
 		margin: '0 auto',
 		backgroundColor: '#c8c8c8'

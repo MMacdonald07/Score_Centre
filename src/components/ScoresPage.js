@@ -91,12 +91,12 @@ const ScoresPage = () => {
 				);
 			} else {
 				return (
-					<Grid item xs={12} sm={6} md={4} lg={3} key={match.id}>
+					<Grid item xs={12} md={6} lg={3} key={match.id}>
 						<Card className={classes.card}>
 							<CardMedia
 								className={classes.cardMedia}
 								image={match.competition.area.ensignUrl}
-								style={{ width: '120px', height: '150px' }}
+								style={{ width: '150px', height: '150px' }}
 							/>
 							<CardContent className={classes.cardContent}>
 								<Typography variant='h6' color='initial'>
@@ -118,7 +118,7 @@ const ScoresPage = () => {
 							<CardMedia
 								className={classes.cardMedia}
 								image='https://seeklogo.com/images/U/uefa-champions-league-logo-506FCBD867-seeklogo.com.png'
-								style={{ width: '120px', height: '150px' }}
+								style={{ width: '150px', height: '150px' }}
 							/>
 							<CardContent className={classes.cardContent}>
 								<Typography variant='h6' color='initial'>
@@ -137,12 +137,12 @@ const ScoresPage = () => {
 				);
 			} else {
 				return (
-					<Grid item xs={12} sm={6} md={4} lg={3} key={match.id}>
+					<Grid item xs={12} md={6} lg={3} key={match.id}>
 						<Card className={classes.card}>
 							<CardMedia
 								className={classes.cardMedia}
 								image={match.competition.area.ensignUrl}
-								style={{ width: '130px', height: '150px' }}
+								style={{ width: '150px', height: '150px' }}
 							/>
 							<CardContent className={classes.cardContent}>
 								<Typography variant='h6' color='initial'>
@@ -168,7 +168,7 @@ const ScoresPage = () => {
 							<CardMedia
 								className={classes.cardMedia}
 								image='https://seeklogo.com/images/U/uefa-champions-league-logo-506FCBD867-seeklogo.com.png'
-								style={{ width: '120px', height: '150px' }}
+								style={{ width: '150px', height: '150px' }}
 							/>
 							<CardContent className={classes.cardContent}>
 								<Typography variant='h6' color='initial'>
@@ -187,12 +187,12 @@ const ScoresPage = () => {
 				);
 			} else {
 				return (
-					<Grid item xs={12} sm={6} md={4} lg={3} key={match.id}>
+					<Grid item xs={12} md={6} lg={3} key={match.id}>
 						<Card className={classes.card}>
 							<CardMedia
 								className={classes.cardMedia}
 								image={match.competition.area.ensignUrl}
-								style={{ width: '120px', height: '150px' }}
+								style={{ width: '150px', height: '150px' }}
 							/>
 							<CardContent className={classes.cardContent}>
 								<Typography variant='h6' color='initial' style={{ color: 'red', fontWeight: 700 }}>
