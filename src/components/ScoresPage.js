@@ -54,7 +54,7 @@ const ScoresPage = () => {
 
 		axios
 			.get(
-				`http://api.football-data.org/v2/matches?competitions=PL,BL1,FL1,PD,SA,CL&dateTo=${formattedDate}&dateFrom=${formattedDate}&status=IN_PLAY,FINISHED,PAUSED,SCHEDULED`,
+				`https://api.football-data.org/v2/matches?competitions=PL,BL1,FL1,PD,SA,CL&dateTo=${formattedDate}&dateFrom=${formattedDate}&status=IN_PLAY,FINISHED,PAUSED,SCHEDULED`,
 				{
 					headers: {
 						'X-Auth-Token': process.env.REACT_APP_FOOTBALL_API_KEY
