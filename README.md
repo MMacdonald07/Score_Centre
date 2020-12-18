@@ -1,4 +1,4 @@
-# COVID_Counter
+# Score_Centre
 
 This site is built with React and Material UI, using an API to extract most recent data regarding the top 5 European leagues including standings, goal scorers, results and upcoming fixtures.
 
